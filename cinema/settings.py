@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'movie',
     "corsheaders",
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +132,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '3/day',
+        'user': '1000/day'
+    }
+}
+
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'

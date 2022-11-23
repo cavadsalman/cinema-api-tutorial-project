@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -18,8 +20,8 @@ class Genre(models.Model):
 
 class Movie(models.Model):
     title = models.CharField(max_length=50)
-    imdb = models.FloatField()
-    image_url = models.URLField(max_length=200)
+    imdb = models.FloatField(null=True, blank=True)
+    image = models.ImageField(upload_to='movie_images/', null=True)
     streamer = models.ForeignKey(Streamer, on_delete=models.SET_NULL, null=True, blank=True)
     genres = models.ManyToManyField(Genre)
     created = models.DateField(auto_now_add=True)
@@ -28,6 +30,7 @@ class Movie(models.Model):
         return self.title
     
 class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
     stars = models.IntegerField()
     comment = models.TextField(null=True, blank=True)
